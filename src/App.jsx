@@ -1,11 +1,14 @@
 import './index.css';
 import MultiStepForm from './components/MultiStepForm';
+import { MultiStepFormProvider } from './context/MultiStepFormContext';
 
 
 const App = () => {
 	return (
 		<main>
-			<MultiStepForm />
+			<MultiStepFormProvider>
+				<MultiStepForm />
+			</MultiStepFormProvider>
 		</main>
 	)
 }

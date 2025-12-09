@@ -1,79 +1,87 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Step1 from './Step1';
 import Step2 from './Step2';
 import Step3 from './Step3';
 import Step4 from './Step4';
 import Step5 from './Step5';
+import { useMultiStepFormContext } from '../context/MultiStepFormContext';
 
 const MultiStepForm = () => {
-  const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    plan: 'arcade', // Default plan
-    yearly: false, // Default billing cycle
-    addOns: [], // Selected add-ons
-  });
-
-  const nextStep = () => setStep((prev) => prev + 1);
-  const prevStep = () => setStep((prev) => prev - 1);
-
-  const handleChange = (input) => (e) => {
-    if (input === 'step') { // Special handling for changing step
-      setStep(e.target.value);
-    } else {
-      setFormData({ ...formData, [input]: e.target.value });
-    }
-  };
+  const {
+    register,
+    handleSubmit,
+    control,
+    errors,
+    watch,
+    setValue,
+    currentStep,
+    goToNextStep,
+    goToPrevStep,
+    goToStep,
+    handleFieldChange, // From context
+    onSubmit: contextOnSubmit, // Use onSubmit from context
+    currentValues, // Current form values from watch()
+  } = useMultiStepFormContext();
 
   const renderStep = () => {
-    switch (step) {
+    switch (currentStep) {
       case 1:
         return (
           <Step1
-            nextStep={nextStep}
-            handleChange={handleChange}
-            values={formData}
+            register={register}
+            errors={errors}
+            goToNextStep={goToNextStep}
           />
         );
       case 2:
         return (
           <Step2
-            nextStep={nextStep}
-            prevStep={prevStep}
-            handleChange={handleChange}
-            values={formData}
+            register={register}
+            errors={errors}
+            watch={watch}
+            setValue={setValue}
+            goToNextStep={goToNextStep}
+            goToPrevStep={goToPrevStep}
+            handleFieldChange={handleFieldChange}
           />
         );
       case 3:
         return (
           <Step3
-            nextStep={nextStep}
-            prevStep={prevStep}
-            handleChange={handleChange}
-            values={formData}
+            register={register}
+            errors={errors}
+            watch={watch}
+            setValue={setValue}
+            goToNextStep={goToNextStep}
+            goToPrevStep={goToPrevStep}
+            handleFieldChange={handleFieldChange}
           />
         );
       case 4:
         return (
           <Step4
-            nextStep={nextStep}
-            prevStep={prevStep}
-            handleChange={handleChange}
-            values={formData}
+            currentValues={currentValues} // Pass current form values for summary
+            goToNextStep={contextOnSubmit} // Call onSubmit from context
+            goToPrevStep={goToPrevStep}
+            goToStep={goToStep}
           />
         );
       case 5:
         return <Step5 />;
       default:
-        return <Step1 nextStep={nextStep} handleChange={handleChange} values={formData} />;
+        return (
+          <Step1
+            register={register}
+            errors={errors}
+            goToNextStep={goToNextStep}
+          />
+        );
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-magnolia p-4">
-      <form aria-label="Multi-step form for subscription" className="bg-white rounded-lg shadow-xl p-6 md:flex md:w-3/4 lg:w-1/2">
+      <form aria-label="Multi-step form for subscription" onSubmit={contextOnSubmit} className="bg-white rounded-lg shadow-xl p-6 md:flex md:w-3/4 lg:w-1/2">
         {/* Sidebar/Step Indicator will go here later */}
         <div className="flex-1 p-4">
           {renderStep()}

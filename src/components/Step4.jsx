@@ -1,6 +1,8 @@
 import React from 'react';
+import { useMultiStepFormContext } from '../context/MultiStepFormContext';
 
-const Step4 = ({ nextStep, prevStep, handleChange, values }) => {
+const Step4 = () => { // No props needed now
+  const { goToNextStep, goToPrevStep, goToStep, currentValues, handleFieldChange } = useMultiStepFormContext();
   const planDetails = {
     arcade: { monthly: 9, yearly: 90 },
     advanced: { monthly: 12, yearly: 120 },
@@ -13,13 +15,13 @@ const Step4 = ({ nextStep, prevStep, handleChange, values }) => {
     { id: 'customizable-profile', title: 'Customizable Profile', priceMonthly: 2, priceYearly: 20 },
   ];
 
-  const selectedPlanPrice = values.yearly
-    ? planDetails[values.plan].yearly
-    : planDetails[values.plan].monthly;
+  const selectedPlanPrice = currentValues.yearly
+    ? planDetails[currentValues.plan].yearly
+    : planDetails[currentValues.plan].monthly;
 
-  const totalAddOnPrice = values.addOns.reduce((sum, addOnId) => {
+  const totalAddOnPrice = currentValues.addOns.reduce((sum, addOnId) => {
     const addOn = addOnsDetails.find((a) => a.id === addOnId);
-    return sum + (values.yearly ? addOn.priceYearly : addOn.priceMonthly);
+    return sum + (currentValues.yearly ? addOn.priceYearly : addOn.priceMonthly);
   }, 0);
 
   const total = selectedPlanPrice + totalAddOnPrice;
@@ -32,9 +34,9 @@ const Step4 = ({ nextStep, prevStep, handleChange, values }) => {
       <article className="bg-alabaster rounded-md p-4 mb-6">
         <div className="flex items-center justify-between pb-4 border-b border-light-gray">
           <div>
-            <h3 className="text-marine-blue font-bold">{values.plan} ({values.yearly ? 'Yearly' : 'Monthly'})</h3>
+            <h3 className="text-marine-blue font-bold">{currentValues.plan} ({currentValues.yearly ? 'Yearly' : 'Monthly'})</h3>
             <button
-              onClick={() => handleChange('step')({ target: { value: 2 } })} // Allows changing plan
+              onClick={() => goToStep(2)} // Allows changing plan directly
               className="text-cool-gray text-sm underline hover:text-purplish-blue"
               aria-label="Change plan"
             >
@@ -42,19 +44,19 @@ const Step4 = ({ nextStep, prevStep, handleChange, values }) => {
             </button>
           </div>
           <span className="text-marine-blue font-bold">
-            ${selectedPlanPrice}/{values.yearly ? 'yr' : 'mo'}
+            ${selectedPlanPrice}/{currentValues.yearly ? 'yr' : 'mo'}
           </span>
         </div>
 
-        {values.addOns.length > 0 && (
+        {currentValues.addOns.length > 0 && (
           <ul className="pt-4">
-            {values.addOns.map((addOnId) => {
+            {currentValues.addOns.map((addOnId) => {
               const addOn = addOnsDetails.find((a) => a.id === addOnId);
               return (
                 <li key={addOnId} className="flex justify-between items-center mb-2">
                   <span className="text-cool-gray text-sm">{addOn.title}</span>
                   <span className="text-marine-blue text-sm">
-                    +${values.yearly ? addOn.priceYearly : addOn.priceMonthly}/{values.yearly ? 'yr' : 'mo'}
+                    +${currentValues.yearly ? addOn.priceYearly : addOn.priceMonthly}/{currentValues.yearly ? 'yr' : 'mo'}
                   </span>
                 </li>
               );
@@ -64,22 +66,22 @@ const Step4 = ({ nextStep, prevStep, handleChange, values }) => {
       </article>
 
       <div className="flex justify-between items-center p-4">
-        <span className="text-cool-gray">Total (per {values.yearly ? 'year' : 'month'})</span>
+        <span className="text-cool-gray">Total (per {currentValues.yearly ? 'year' : 'month'})</span>
         <span className="text-purplish-blue text-xl font-bold">
-          ${total}/{values.yearly ? 'yr' : 'mo'}
+          ${total}/{currentValues.yearly ? 'yr' : 'mo'}
         </span>
       </div>
 
       {/* Navigation Buttons */}
       <div className="flex justify-between mt-auto">
         <button
-          onClick={prevStep}
+          onClick={goToPrevStep}
           className="text-cool-gray py-2 px-4 rounded-md hover:text-marine-blue transition-colors duration-200"
         >
           Go Back
         </button>
         <button
-          onClick={nextStep}
+          onClick={goToNextStep}
           className="bg-purplish-blue text-white py-2 px-4 rounded-md hover:bg-pastel-blue transition-colors duration-200"
         >
           Confirm

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Step3 = ({ nextStep, prevStep, handleChange, values }) => {
+const Step3 = ({ register, errors, watch, setValue, goToNextStep, goToPrevStep, handleFieldChange }) => {
   const addOns = [
     {
       id: 'online-service',
@@ -38,21 +38,23 @@ const Step3 = ({ nextStep, prevStep, handleChange, values }) => {
             key={addOn.id}
             htmlFor={addOn.id}
             className={`flex items-center justify-between p-4 border rounded-md cursor-pointer
-              ${values.addOns.includes(addOn.id) ? 'border-purplish-blue bg-alabaster' : 'border-light-gray hover:border-purplish-blue'}`}
+              ${watch('addOns').includes(addOn.id) ? 'border-purplish-blue bg-alabaster' : 'border-light-gray hover:border-purplish-blue'}`}
           >
             <div className="flex items-center">
               <input
                 type="checkbox"
                 id={addOn.id}
-                name={addOn.id}
-                checked={values.addOns.includes(addOn.id)}
-                onChange={() => {
-                  const newAddOns = values.addOns.includes(addOn.id)
-                    ? values.addOns.filter((item) => item !== addOn.id)
-                    : [...values.addOns, addOn.id];
-                  handleChange('addOns')({ target: { value: newAddOns } });
-                }}
+                value={addOn.id} // Important for react-hook-form with array of checkboxes
                 className="w-5 h-5 mr-4 accent-purplish-blue"
+                {...register('addOns')} // Register as array
+                checked={watch('addOns').includes(addOn.id)} // Control checked state
+                onChange={(e) => { // Manual change handler to update array using setValue
+                  const currentAddOns = watch('addOns') || [];
+                  const newAddOns = e.target.checked
+                    ? [...currentAddOns, addOn.id]
+                    : currentAddOns.filter((item) => item !== addOn.id);
+                  handleFieldChange('addOns', newAddOns);
+                }}
               />
               <div>
                 <h3 className="text-marine-blue font-bold">{addOn.title}</h3>
@@ -60,7 +62,7 @@ const Step3 = ({ nextStep, prevStep, handleChange, values }) => {
               </div>
             </div>
             <span className="text-purplish-blue text-sm">
-              +${values.yearly ? addOn.priceYearly : addOn.priceMonthly}/{values.yearly ? 'yr' : 'mo'}
+              +${watch('yearly') ? addOn.priceYearly : addOn.priceMonthly}/{watch('yearly') ? 'yr' : 'mo'}
             </span>
           </label>
         ))}
@@ -70,13 +72,15 @@ const Step3 = ({ nextStep, prevStep, handleChange, values }) => {
       {/* Navigation Buttons */}
       <div className="flex justify-between mt-auto">
         <button
-          onClick={prevStep}
+          type="button" // Important not to submit the form
+          onClick={goToPrevStep}
           className="text-cool-gray py-2 px-4 rounded-md hover:text-marine-blue transition-colors duration-200"
         >
           Go Back
         </button>
         <button
-          onClick={nextStep}
+          type="button" // Important not to submit the form
+          onClick={goToNextStep}
           className="bg-marine-blue text-white py-2 px-4 rounded-md hover:bg-purplish-blue transition-colors duration-200"
         >
           Next Step
