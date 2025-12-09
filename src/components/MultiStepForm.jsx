@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Step1 from './Step1';
 import Step2 from './Step2';
+import Step3 from './Step3';
 
 const MultiStepForm = () => {
   const [step, setStep] = useState(1);
@@ -10,6 +11,7 @@ const MultiStepForm = () => {
     phone: '',
     plan: 'arcade', // Default plan
     yearly: false, // Default billing cycle
+    addOns: [], // Selected add-ons
   });
 
   const nextStep = () => setStep((prev) => prev + 1);
@@ -32,6 +34,15 @@ const MultiStepForm = () => {
       case 2:
         return (
           <Step2
+            nextStep={nextStep}
+            prevStep={prevStep}
+            handleChange={handleChange}
+            values={formData}
+          />
+        );
+      case 3:
+        return (
+          <Step3
             nextStep={nextStep}
             prevStep={prevStep}
             handleChange={handleChange}
