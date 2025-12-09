@@ -1,11 +1,11 @@
 import './App.css';
+import MultiStepForm from './components/MultiStepForm';
 
 
 const App = () => {
 	return (
-		<div className='text-base bg-amber-900 text-blue-500'>App</div>
+		<MultiStepForm />
 	)
 }
 
 export default App
-
