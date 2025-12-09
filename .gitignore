@@ -12,7 +12,6 @@ dist
 dist-ssr
 *.local
 .vscode
-.husky
 .cache
 .next
 # Editor directories and files
