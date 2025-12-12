@@ -66,6 +66,8 @@ const MultiStepForm = () => {
 			<FormProvider {...methods}>
 				{/* The form needs to span the full height on mobile to contain the sticky footer */}
 				<form onSubmit={methods.handleSubmit(onSubmit)} className="flex h-full flex-col md:h-auto">
+					{/* Hidden submit button for accessibility */}
+					<button type="submit" className="sr-only">Submit Form</button>
 					{/* Main content area that holds the card */}
 					<div className="flex-grow md:flex-grow-0">
 						<div className="relative mx-4 mt-28 md:mx-0 md:mt-0">
