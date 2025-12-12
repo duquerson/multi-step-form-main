@@ -26,7 +26,7 @@ const Navigation = () => {
 				<button
 					type="button"
 					onClick={goToPrevStep}
-					className="text-cool-gray hover:text-marine-blue rounded-lg px-6 py-3 font-medium transition-colors duration-200"
+					className="cursor-pointer text-cool-gray hover:text-marine-blue rounded-lg px-6 py-3 font-medium transition-colors duration-200"
 				>
 					Go Back
 				</button>
@@ -37,14 +37,14 @@ const Navigation = () => {
 				<button
 					type="button"
 					onClick={handleNext}
-					className="bg-marine-blue hover:bg-purplish-blue rounded-lg px-6 py-3 text-white transition-colors duration-200"
+					className="cursor-pointer bg-marine-blue hover:bg-purplish-blue rounded-lg px-6 py-3 text-white transition-colors duration-200"
 				>
 					Next Step
 				</button>
 			) : (
 				<button
 					type="submit"
-					className="bg-purplish-blue hover:bg-pastel-blue rounded-lg px-6 py-3 text-white transition-colors duration-200"
+					className="cursor-pointer bg-purplish-blue hover:bg-pastel-blue rounded-lg px-6 py-3 text-white transition-colors duration-200"
 				>
 					Confirm
 				</button>
