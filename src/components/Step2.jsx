@@ -70,13 +70,7 @@ const Step2 = () => {
 						htmlFor="pro"
 						className={`flex flex-1 cursor-pointer flex-row items-center rounded-md border p-4 md:flex-col md:items-start ${watch('plan') === 'pro' ? 'border-purplish-blue bg-alabaster' : 'border-light-gray hover:border-purplish-blue'}`}
 					>
-						<input
-							type="radio"
-							id="pro"
-							value="pro"
-							className="hidden"
-							{...register('plan')}
-						/>
+						<input type="radio" id="pro" value="pro" className="hidden" {...register('plan')} />
 						<img src={IconPro} alt="Pro Icon" className="mr-4 mb-8 h-10 w-10 md:mr-0 md:mb-10" />
 						<div>
 							<h3 className="text-marine-blue font-bold">Pro</h3>

@@ -45,9 +45,7 @@ const StepIndicator = () => {
 						</button>
 						<div className="ml-4 hidden text-left md:block">
 							<p className="text-cool-gray text-xs">STEP {step.number}</p>
-							<p className="text-sm font-bold tracking-wide text-white uppercase">
-								{step.title}
-							</p>
+							<p className="text-sm font-bold tracking-wide text-white uppercase">{step.title}</p>
 						</div>
 					</li>
 				))}
